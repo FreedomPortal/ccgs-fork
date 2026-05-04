@@ -19,8 +19,11 @@
 
 ---
 > **Fork of:** [CCGS — Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios) by Donchitos
+> 
 > **License:** MIT (fork — original copyright retained)
+> 
 > **Maintained by:** FreedomPortal (Technica Games)
+> 
 > **Edition:** Technica Edition (CCGS:TE)
 
 
