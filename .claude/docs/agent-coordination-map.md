@@ -4,18 +4,18 @@
 
 ```
                            [Human Developer]
-                                 |
-                 +---------------+---------------+
-                 |               |               |
-         creative-director  technical-director  producer
-                 |               |               |
-        +--------+--------+     |        (coordinates all)
-        |        |        |     |
-  game-designer art-dir  narr-dir  lead-programmer  qa-lead  audio-dir
-        |        |        |         |                |        |
-     +--+--+     |     +--+--+  +--+--+--+--+--+   |        |
-     |  |  |     |     |     |  |  |  |  |  |  |   |        |
-    sys lvl eco  ta   wrt  wrld gp ep  ai net tl ui qa-t    snd
+                                   |
+                 +-----------------+----------------+
+                 |                 |                |
+         creative-director  technical-director   producer
+                 |                 |                |
+        +--------+--------+        |        (coordinates all)
+        |        |        |        |
+  game-designer art-dir narr-dir lead-programme r    qa-lead  audio-dir
+        |        |        |        |                     |        |
+     +--+--+     |     +--+--+  +--+--+--+---+--+---+    |        |
+     |  |  |     |     |     |  |  |  |  |   |  |   |    |        |
+    sys lvl eco  ta   wrt  wrld gp ep ai net tl ui gpd  qa-t     snd
                                  |
                              +---+---+
                              |       |
@@ -29,6 +29,7 @@
     accessibility-specialist -- WCAG, colorblind, remapping, text scaling
     live-ops-designer       -- Seasons, events, battle passes, retention, live economy
     community-manager       -- Patch notes, player feedback, crisis comms
+	publishing-manager      -- Publishing roadmap, press & community outreach, marketing plan
 
   Engine Specialists (use the SET matching your engine):
     unreal-specialist  -- UE5 lead: Blueprint/C++, GAS overview, UE subsystems
@@ -59,7 +60,7 @@ wrt  = writer                 tl  = tools-programmer
 wrld = world-builder          ui  = ui-programmer
 snd  = sound-designer         qa-t = qa-tester
 narr-dir = narrative-director perf-a = performance-analyst
-art-dir = art-director
+art-dir = art-director        gpd = game-pipeline-developer
 ```
 
 ## Delegation Rules
@@ -72,13 +73,13 @@ art-dir = art-director
 | technical-director | lead-programmer, devops-engineer, performance-analyst, technical-artist (technical decisions) |
 | producer | Any agent (task assignment within their domain only) |
 | game-designer | systems-designer, level-designer, economy-designer |
-| lead-programmer | gameplay-programmer, engine-programmer, ai-programmer, network-programmer, tools-programmer, ui-programmer |
+| lead-programmer | gameplay-programmer, engine-programmer, ai-programmer, network-programmer, tools-programmer, ui-programmer, game-pipeline-developer |
 | art-director | technical-artist, ux-designer |
 | audio-director | sound-designer |
 | narrative-director | writer, world-builder |
 | qa-lead | qa-tester |
 | release-manager | devops-engineer (release builds), qa-lead (release testing) |
-| localization-lead | writer (string review), ui-programmer (text fitting) |
+| localization-lead | writer (string review), ui-programmer (text fitting), localization-specialist |
 | prototyper | (works independently, reports findings to producer and relevant leads) |
 | security-engineer | network-programmer (security review), lead-programmer (secure patterns) |
 | accessibility-specialist | ux-designer (accessible patterns), ui-programmer (implementation), qa-tester (a11y testing) |

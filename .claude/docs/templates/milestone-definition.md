@@ -7,6 +7,17 @@
 - **Duration**: [N weeks]
 - **Number of Sprints**: [N]
 
+## Budget
+
+| Field | Estimated | Actual |
+|-------|-----------|--------|
+| Development hours | [N hrs] | — |
+| Hard costs (assets, licenses, contractors) | $[N] | — |
+| Cumulative spend to date | — | $[N] |
+| Remaining runway | — | $[N] |
+
+*Fill "Actual" column at /milestone-review time.*
+
 ## Milestone Goal
 
 [2-3 sentences describing what this milestone achieves and why it matters.

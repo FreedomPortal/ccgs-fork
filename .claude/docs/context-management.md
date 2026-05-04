@@ -2,6 +2,14 @@
 
 Context is the most critical resource in a Claude Code session. Manage it actively.
 
+## Communication Efficiency
+
+**Efficiency override: Adhere to global token-saving protocols.**
+When proposing 'Options' for the Collaboration Protocol (Question -> Options -> Decision):
+- List options as a concise bulleted list.
+- Eliminate all preambles, introductory filler, and conversational sycophancy.
+- Provide raw data or code snippets directly unless an explanation is requested.
+
 ## File-Backed State (Primary Strategy)
 
 **The file is the memory, not the conversation.** Conversations are ephemeral and
@@ -39,6 +47,33 @@ Task: Implement hitbox detection
 - Remove or empty the block when no active work focus exists
 
 After any disruption (compaction, crash, `/clear`), read the state file first.
+
+## Crash-Safe Memory Protocol
+
+**Write agent memory immediately — never defer to session end.**
+
+A session crash loses everything not backed to a file. The session state file
+captures task progress; agent memory files capture knowledge. Both must be
+updated as discoveries happen, not batched at the end.
+
+Write to agent memory the moment any of these are established:
+- A comparable title, reference game, film, or inspiration is identified
+- A design decision, pillar, anti-pillar, or settled question is confirmed
+- A technical constraint, engine limitation, or architectural choice is made
+- A production fact is established (scope, platform, monetization, timeline)
+- A user preference or workflow feedback is given
+
+**Routing guide:**
+
+| Discovery type | Agent memory file |
+|---------------|------------------|
+| Creative / design / art | `creative-director/MEMORY.md` |
+| Technical / engine / architecture | `technical-director/MEMORY.md` |
+| Production / scope / schedule | `producer/MEMORY.md` |
+| Code standards / skill conventions | `lead-programmer/MEMORY.md` |
+| Workflow / collaboration preferences | User memory (`~/.claude/projects/.../memory/`) |
+
+Use `/checkpoint` to explicitly flush all session discoveries to memory at any time.
 
 ### Incremental File Writing
 

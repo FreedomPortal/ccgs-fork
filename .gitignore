@@ -137,3 +137,8 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
+.DS_Store
+Thumbs.db
+
+# === MCP CONFIG ===
+.mcp.json

@@ -1,7 +1,9 @@
-# Claude Code Game Studios -- Game Studio Agent Architecture
+# Claude Code Game Studios: Technica Edition
+**Agent-Driven Game Development & Publishing Architecture**
 
-Indie game development managed through 48 coordinated Claude Code subagents.
-Each agent owns a specific domain, enforcing separation of concerns and quality.
+CCGS is a modular framework for independent game development managed through 48+ specialized agents. By enforcing a strict separation of concerns, this architecture ensures quality across all domains—from core mechanics to automated publishing pipelines.
+
+**Technica Edition** extends the base framework by integrating end-to-end publishing workflows, bridging the gap between active development and post-launch operations by introducing new agents, skills, hooks and workflows.
 
 ## Technology Stack
 

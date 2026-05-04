@@ -71,5 +71,63 @@ if [ -f "$STATE_FILE" ]; then
     echo "=== END SESSION STATE PREVIEW ==="
 fi
 
+# --- Publishing pipeline check ---
+ROADMAP_FILE="production/publishing/publishing-roadmap.md"
+COMMUNITY_FILE="production/publishing/community-status.md"
+
+echo ""
+echo "=== PUBLISHING PIPELINE ==="
+
+if [ ! -f "$ROADMAP_FILE" ]; then
+    echo "⚠️  No publishing roadmap found."
+    echo "   Publishing work should start in pre-production — not at launch."
+    echo "   Run /marketing-plan to create your publishing roadmap now."
+else
+    echo "Publishing roadmap: found"
+
+    # Count overdue items (lines with 🔴)
+    OVERDUE_COUNT=$(grep -c "🔴" "$ROADMAP_FILE" 2>/dev/null || echo 0)
+    # Count unlocked items (lines with 🟡)
+    UNLOCKED_COUNT=$(grep -c "🟡" "$ROADMAP_FILE" 2>/dev/null || echo 0)
+
+    if [ "$OVERDUE_COUNT" -gt 0 ]; then
+        echo "🔴 Overdue publishing tasks: $OVERDUE_COUNT"
+        grep "🔴" "$ROADMAP_FILE" 2>/dev/null | head -3 | while read -r line; do
+            echo "   $line"
+        done
+        if [ "$OVERDUE_COUNT" -gt 3 ]; then
+            echo "   ... ($OVERDUE_COUNT total — run /publish-check for full list)"
+        fi
+    fi
+
+    if [ "$UNLOCKED_COUNT" -gt 0 ]; then
+        echo "🟡 Publishing tasks unlocked by current dev stage: $UNLOCKED_COUNT"
+        grep "🟡" "$ROADMAP_FILE" 2>/dev/null | head -3 | while read -r line; do
+            echo "   $line"
+        done
+        if [ "$UNLOCKED_COUNT" -gt 3 ]; then
+            echo "   ... ($UNLOCKED_COUNT total — run /publish-check for full list)"
+        fi
+    fi
+
+    if [ "$OVERDUE_COUNT" -eq 0 ] && [ "$UNLOCKED_COUNT" -eq 0 ]; then
+        echo "✅ No overdue or unlocked publishing tasks."
+    fi
+fi
+
+# Community status summary
+if [ -f "$COMMUNITY_FILE" ]; then
+    # Find platforms with no recent post (lines containing "—" or "not set up")
+    INACTIVE=$(grep -c "not set up\|—\|No posts" "$COMMUNITY_FILE" 2>/dev/null || echo 0)
+    if [ "$INACTIVE" -gt 0 ]; then
+        echo "💬 Community: $INACTIVE platform(s) inactive or not set up"
+        echo "   Run /community-plan to review."
+    else
+        echo "💬 Community: active"
+    fi
+fi
+
+echo "=== END PUBLISHING CHECK ==="
+
 echo "==================================="
 exit 0

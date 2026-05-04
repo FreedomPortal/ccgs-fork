@@ -1,117 +1,242 @@
 <p align="center">
-  <h1 align="center">Claude Code Game Studios</h1>
+  <h1 align="center">Claude Code Game Studios: Technica Edition</h1>
   <p align="center">
-    Turn a single Claude Code session into a full game development studio.
+    A CCGS fork that enhance AI agent game development framework with publishing workflow.
     <br />
-    48 agents. 37 workflows. One coordinated AI team.
+   Extend base framework with: Go-To-Market Layer,  Post-Launch Lifecycle, and Continuity.
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-48-blueviolet" alt="48 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-37-green" alt="37 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks"></a>
+  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-52-blueviolet" alt="52 Agents"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-105-green" alt="105 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-13-orange" alt="13 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-11-red" alt="11 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
-  <a href="https://ko-fi.com/donchitos"><img src="https://img.shields.io/badge/Ko--fi-Support%20this%20project-ff5e5b?logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
+ <a href="https://wise.com/pay/me/wams1"><img src="https://img.shields.io/badge/Wise-Support%20this%20project-9FE870?logo=wise&logoColor=white" alt="Wise"></a>
 </p>
 
 ---
+> **Fork of:** [CCGS — Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios) by Donchitos
+> **License:** MIT (fork — original copyright retained)
+> **Maintained by:** FreedomPortal (Technica Games)
+> **Edition:** Technica Edition (CCGS:TE)
 
-## Why This Exists
 
-Building a game solo with AI is powerful — but a single chat session has no structure. No one stops you from hardcoding magic numbers, skipping design docs, or writing spaghetti code. There's no QA pass, no design review, no one asking "does this actually fit the game's vision?"
+## What Is CCGS:TE?
 
-**Claude Code Game Studios** solves this by giving your AI session the structure of a real studio. Instead of one general-purpose assistant, you get 48 specialized agents organized into a studio hierarchy — directors who guard the vision, department leads who own their domains, and specialists who do the hands-on work. Each agent has defined responsibilities, escalation paths, and quality gates.
+CCGS is a Claude Code agent framework for game development — 48+ specialized AI agents organized as a studio hierarchy, coordinated around a 7-stage production pipeline.
 
-The result: you still make every decision, but now you have a team that asks the right questions, catches mistakes early, and keeps your project organized from first brainstorm to launch.
+The base framework covers everything from concept to release. What it doesn't cover is what comes after you ship, or what you need to reach players in the first place.
+
+CCGS:TE is a fork that extends the base framework in three directions:
+
+| Addition | What it adds |
+|----------|-------------|
+| **Go-To-Market Layer** | Marketing, community, press outreach, store presence, social publishing |
+| **Post-Launch Lifecycle** | Live ops strategy, DLC design, monetization, post-mortems |
+| **Pipeline & Continuity** | Session resume, knowledge persistence, toolchain setup, demo workflow, expanded localization |
+
+The result: CCGS covers *Build → Ship* —  CCGS:TE covers *Build → Ship → Operate → Grow*
 
 ---
-
+> _**Disclaimer:** The CCGS:TE repo remains a fork of CCGS and maintains only the extension works. 
+> The existing game development aspects of the framework are maintained in the CCGS base repo._
+---
 ## Table of Contents
-
-- [What's Included](#whats-included)
-- [Studio Hierarchy](#studio-hierarchy)
-- [Slash Commands](#slash-commands)
+- [New Agents](#new-agents)
+- [New Skills](#new-skills)
+- [New Hook](#new-hook)
+- [Workflow Changes](#workflow-changes)
+- [Pipeline Integration](#pipeline-integration)
+- [Roadmap](#roadmap)
 - [Getting Started](#getting-started)
-- [Upgrading](#upgrading)
-- [Project Structure](#project-structure)
-- [How It Works](#how-it-works)
-- [Design Philosophy](#design-philosophy)
-- [Customization](#customization)
-- [Platform Support](#platform-support)
-- [Community](#community)
-- [License](#license)
+- [Attribution](#attribution)
+
+## New Agents
+
+### `game-pipeline-developer`
+Owns pipeline tools that operate outside the game engine: asset processors, data exporters, format converters, and automation scripts. Also owns the system-level workflow skills (setup-tool, checkpoint, resume, publish-check, export-build).
+
+**Domain:** Tools that bridge content creation and the game engine. Runs isolated from `src/`.
 
 ---
 
-## What's Included
+### `publishing-manager`
+The business-side director-lite. Owns the entire player-facing lifecycle from pre-launch positioning through post-launch community. Runs a publishing roadmap parallel to the development pipeline.
 
-| Category | Count | Description |
-|----------|-------|-------------|
-| **Agents** | 48 | Specialized subagents across design, programming, art, audio, narrative, QA, and production |
-| **Skills** | 37 | Slash commands for common workflows (`/start`, `/sprint-plan`, `/code-review`, `/brainstorm`, etc.) |
-| **Hooks** | 8 | Automated validation on commits, pushes, asset changes, session lifecycle, agent audit, and gap detection |
-| **Rules** | 11 | Path-scoped coding standards enforced when editing gameplay, engine, AI, UI, network code, and more |
-| **Templates** | 29 | Document templates for GDDs, ADRs, sprint plans, economy models, faction design, and more |
+**Domain:** All `/export-*` skills, press outreach, marketing plan, community plan, team-publish.
 
-## Studio Hierarchy
+---
 
-Agents are organized into three tiers, matching how real studios operate:
+### `localization-specialist`
+Handles localization execution under `localization-lead` direction. String wrapping, context validation, LQA (overflow, tone, placeholder, cultural checks), and translation sync when source text changes.
 
-```
-Tier 1 — Directors (Opus)
-  creative-director    technical-director    producer
+**Domain:** String implementation and validation. The `localization-lead` handles strategy; this agent executes.
 
-Tier 2 — Department Leads (Sonnet)
-  game-designer        lead-programmer       art-director
-  audio-director       narrative-director    qa-lead
-  release-manager      localization-lead
+---
 
-Tier 3 — Specialists (Sonnet/Haiku)
-  gameplay-programmer  engine-programmer     ai-programmer
-  network-programmer   tools-programmer      ui-programmer
-  systems-designer     level-designer        economy-designer
-  technical-artist     sound-designer        writer
-  world-builder        ux-designer           prototyper
-  performance-analyst  devops-engineer       analytics-engineer
-  security-engineer    qa-tester             accessibility-specialist
-  live-ops-designer    community-manager
-```
+## New Skills
 
-### Engine Specialists
+### Onboarding & Continuity
 
-The template includes agent sets for all three major engines. Use the set that matches your project:
+| Skill | Purpose |
+|-------|---------|
+| `/setup-tool` | Configure a standalone tool project — creates `TOOL_SPEC.md`, routes to `game-pipeline-developer` |
+| `/resume` | Read session state and agent memory; present a brief so you pick up immediately where you left off |
+| `/checkpoint` | Flush session discoveries to agent memory files — call proactively before crashes or `/clear` |
+| `/log-lesson` | Encode a lesson from external review, playtesting, or press feedback into `production/publishing/writing-lessons.md` |
 
-| Engine | Lead Agent | Sub-Specialists |
-|--------|-----------|-----------------|
-| **Godot 4** | `godot-specialist` | GDScript, Shaders, GDExtension |
-| **Unity** | `unity-specialist` | DOTS/ECS, Shaders/VFX, Addressables, UI Toolkit |
-| **Unreal Engine 5** | `unreal-specialist` | GAS, Blueprints, Replication, UMG/CommonUI |
+---
 
-## Slash Commands
+### Marketing & Growth
 
-Type `/` in Claude Code to access all 37 skills:
+| Skill | Purpose |
+|-------|---------|
+| `/marketing-plan` | Full publishing roadmap — community strategy, pre-launch milestones, content cadence |
+| `/community-plan` | Platform setup, content calendar, metric tracking (wishlists, followers, engagement) |
+| `/analytics-setup` | Design player event tracking — what to instrument, platform choice, implementation in engine |
+| `/press-outreach` | Build media contact list, draft outreach templates, track status in `production/publishing/press-contacts.md` |
 
-**Reviews & Analysis**
-`/design-review` `/code-review` `/balance-check` `/asset-audit` `/scope-check` `/perf-profile` `/tech-debt`
+---
 
-**Production**
-`/sprint-plan` `/milestone-review` `/estimate` `/retrospective` `/bug-report`
+### Publishing & Distribution
 
-**Project Management**
-`/start` `/project-stage-detect` `/reverse-document` `/gate-check` `/map-systems` `/design-system`
+| Skill | Purpose |
+|-------|---------|
+| `/publish-check` | Audit publishing roadmap vs. dev stage — surfaces overdue tasks and unlocked actions (also runs automatically at session start) |
+| `/export-steam-page` | Compile store page copy — short/long descriptions, feature list, tags — from GDDs and writing-lessons.md |
+| `/export-devlog` | Draft devlog post — reads session state, sprint history, GDDs; enforces writing-lessons rules |
+| `/export-social` | Batch social content for scheduled platforms |
+| `/export-pitch` | Investor/publisher pitch deck content |
+| `/export-review` | Structured press/review copy |
+| `/export-crowdfunding` | Crowdfunding campaign content |
+| `/team-publish` | Parallel team run: publishing-manager + community-manager + writer — unified publishing status output |
 
-**Release**
-`/release-checklist` `/launch-checklist` `/changelog` `/patch-notes` `/hotfix`
+---
 
-**Creative**
-`/brainstorm` `/playtest-report` `/prototype` `/onboard` `/localize`
+### Post-Launch Lifecycle
 
-**Team Orchestration** (coordinate multiple agents on a single feature)
-`/team-combat` `/team-narrative` `/team-ui` `/team-release` `/team-polish` `/team-audio` `/team-level`
+| Skill | Purpose |
+|-------|---------|
+| `/live-ops-plan` | Strategic post-launch plan — content cadence, seasonal events calendar, retention mechanics |
+| `/monetization-design` | Revenue model design with ethical guardrails — flags pay-to-win patterns and dark patterns explicitly |
+| `/dlc-design` | DLC content package design — scope, pricing, content list, timeline |
+| `/mod-support` | Mod support architecture — what to expose, tooling for modders, community integration |
+| `/post-mortem` | Structured retrospective after milestones or at release — what worked, what didn't, one concrete process change |
 
+---
+
+### Demo Workflow
+
+| Skill | Purpose |
+|-------|---------|
+| `/demo-scope` | Define demo boundaries — what content is included, what is cut, what impression to leave |
+| `/demo-build` | Export and validate a playable demo build |
+| `/demo-playtest` | Structured playtest protocol for demo-specific goals (first impressions, conversion) |
+
+---
+
+### Localization Suite
+
+| Skill | Purpose |
+|-------|---------|
+| `/localize` | Full pipeline — scan → wrap → translate → QA (use for first-time localization of a feature) |
+| `/localization-prepare` | Scan for unwrapped strings, wrap in `tr()`, scaffold string table |
+| `/localization-integrate` | Mid-pipeline integration — import translations, resolve merge conflicts |
+| `/localization-sync` | Detect stale translations when source text changes |
+| `/localization-qa` | Dedicated LQA pass — overflow, tone, placeholder, cultural checks |
+| `/localization-cultural-review` | Standalone cultural sensitivity review per locale |
+| `/localization-rtl` | RTL layout validation for Arabic/Hebrew locales |
+| `/localization-vo` | Voice-over pipeline — script export, casting brief, sync validation |
+
+---
+
+### Production Additions
+
+| Skill | Purpose |
+|-------|---------|
+| `/export-build` | Export release build via engine headless export — logs version, platform, timestamp to `production/qa/builds.md` |
+| `/security-audit` | Audit game for cheating vectors, save data security, network exposure |
+| `/skill-improve` | Review and improve a skill file using lessons from past runs |
+| `/day-one-patch` | Structured day-one patch preparation — known issues list, severity triage, comms draft |
+
+---
+
+## New Hook
+
+### `memory-checkpoint.sh`
+**Event:** `PostToolUse` (Write \| Edit)
+**Function:** After every file write or edit, checks whether the change contains cross-session-relevant information and prompts agent memory update if so.
+
+This hook makes `/checkpoint` semi-automatic. The manual `/checkpoint` skill is still needed for deliberate end-of-session flushes.
+
+---
+
+## Workflow Changes
+
+### Session Continuity System
+The most significant architectural addition. Three parts work together:
+
+1. **`production/session-state/active.md`** — living checkpoint updated after every significant milestone. Contains: current task, progress checklist, key decisions, files in progress, open questions.
+2. **`/checkpoint`** — explicit flush to agent memory (`.claude/agent-memory/[agent]/MEMORY.md`). Call before `/clear`, before long breaks, after major decisions.
+3. **`/resume`** — reads `active.md` + agent memory + session logs and presents a brief on open. No session lost to context compaction.
+
+`session-start.sh` was extended to detect and preview `active.md` automatically every session open.
+
+### `/help` → `/next`
+Base CCGS used `/help` as the "what do I do next?" navigation skill. This conflicts with Claude Code's built-in `/help` command. Renamed to `/next` in CCGS:TE. All internal references updated.
+
+### `writing-lessons.md` Knowledge Base
+Located at `production/publishing/writing-lessons.md`. All `/export-*` skills read this file before generating output. Use `/log-lesson` to add entries. Format: context → problem → rule → example. Decisions marked as settled are not re-debated by agents.
+
+---
+
+## Pipeline Integration
+
+CCGS:TE skills map onto the existing 7-stage pipeline as a **parallel publishing track**. No base pipeline stages are removed or restructured.
+
+| Stage | New skills that activate |
+|-------|--------------------------|
+| 1 — Concept | `/marketing-plan`, `/monetization-design` |
+| 2 — Systems Design | `/analytics-setup` |
+| 3 — Technical Setup | `/setup-tool` (if pipeline tool work in scope) |
+| 4 — Pre-Production | `/community-plan`, `/demo-scope` |
+| 5 — Production | `/export-devlog`, `/export-social`, `/live-ops-plan` |
+| 6 — Polish | `/export-steam-page`, `/press-outreach`, `/export-pitch`, `/demo-build`, `/demo-playtest`, `/localization-*` |
+| 7 — Release | `/export-build`, `/team-publish`, `/day-one-patch`, `/post-mortem` |
+| Post-Launch | `/dlc-design`, `/mod-support`, `/live-ops-plan` (operational) |
+
+`/publish-check` runs automatically at **every session start** via `session-start.sh` — surfaces overdue publishing tasks and unlocked actions without interrupting workflow.
+
+---
+
+## Roadmap
+
+### Pending Implementation
+
+**Demo Suite (partial)** — `/demo-plan`, `/demo-polish`, `/demo-feedback`, `/demo-iterate` not yet implemented. Current demo skills cover scope → build → playtest only.
+
+**Player Insight Loop** — analytics and live ops exist but no feedback loop connecting them:
+- `/telemetry-design` — instrument player events at the design level
+- `/player-segmentation` — define player cohorts for targeted analysis
+- `/ab-test` — design and track A/B tests for feature decisions
+- `/retention-analysis` — structured retention curve analysis
+- `/economy-simulation` — simulate economy balance before shipping changes
+
+**New Agent: `growth-analyst`** — or expand `analytics-engineer` into a hybrid data + product thinking role. Owns the Player Insight Loop skills.
+
+### Known Gaps from Base CCGS (not yet addressed in TE)
+
+| Gap | Description |
+|-----|-------------|
+| T5 | Publishing artifacts not required at Stage 6 gate — game can reach Release without store page or press kit |
+| T6 | Tooling sprint work not tracked in `/sprint-plan` |
+| T9 | Rule coverage gaps in `.claude/rules/` are silent — uncovered `src/` paths get no enforcement |
+| B2 | No solo-dev scope viability check in producer phase gate |
+
+---
 ## Getting Started
 
 ### Prerequisites
@@ -124,9 +249,9 @@ All hooks fail gracefully if optional tools are missing — nothing breaks, you 
 
 ### Setup
 
-1. **Clone or use as template**:
+1. **Clone or use as template**: (replace "my-game" with your project folder name)
    ```bash
-   git clone https://github.com/Donchitos/Claude-Code-Game-Studios.git my-game
+   git clone https://github.com/FreedomPortal/ccgs-technica-edition.git my-game
    cd my-game
    ```
 
@@ -142,129 +267,38 @@ All hooks fail gracefully if optional tools are missing — nothing breaks, you 
    - `/brainstorm` — explore game ideas from scratch
    - `/setup-engine godot 4.6` — configure your engine if you already know
    - `/project-stage-detect` — analyze an existing project
+   - `/publish-check` — start publishing workflow (Recommended if migrating project from CCGS)
 
-## Upgrading
 
-Already using an older version of this template? See [UPGRADING.md](UPGRADING.md)
-for step-by-step migration instructions, a breakdown of what changed between
-versions, and which files are safe to overwrite vs. which need a manual merge.
+### Migrating an Existing Project from CCGS
 
-## Project Structure
+**Prerequisite:** This guide assumes your local repository already has two configured remotes: `origin` (your game project remote) and `upstream` (pointing to the original CCGS base repository).
 
-```
-CLAUDE.md                           # Master configuration
-.claude/
-  settings.json                     # Hooks, permissions, safety rules
-  agents/                           # 48 agent definitions (markdown + YAML frontmatter)
-  skills/                           # 37 slash commands (subdirectory per skill)
-  hooks/                            # 8 hook scripts (bash, cross-platform)
-  rules/                            # 11 path-scoped coding standards
-  docs/
-    quick-start.md                  # Detailed usage guide
-    agent-roster.md                 # Full agent table with domains
-    agent-coordination-map.md       # Delegation and escalation paths
-    setup-requirements.md           # Prerequisites and platform notes
-    templates/                      # 28 document templates
-src/                                # Game source code
-assets/                             # Art, audio, VFX, shaders, data files
-design/                             # GDDs, narrative docs, level designs
-docs/                               # Technical documentation and ADRs
-tests/                              # Test suites
-tools/                              # Build and pipeline tools
-prototypes/                         # Throwaway prototypes (isolated from src/)
-production/                         # Sprint plans, milestones, release tracking
-```
+You have two options for integrating CCGS:TE:
 
-## How It Works
+1. **Option 1: Replace the Upstream Source (Recommended for full adoption)**
+   If you intend for CCGS:TE to be the single, primary source for the framework, use `set-url` to redirect the `upstream` remote.
+   ```bash
+   git remote set-url upstream https://github.com/FreedomPortal/ccgs-technica-edition.git
+   git remote -v
+      ```
+2. **Option 2: Maintain Both Frameworks (For historical tracking)** 
+If you need to keep the original CCGS history accessible while pulling the specialized features from CCGS:TE, rename the old upstream remote to `maintainer` and add the fork as a new upstream remote.
+   ```bash
+   git remote rename upstream maintainer
+   git remote add upstream https://github.com/FreedomPortal/ccgs-technica-edition.git
+   ```
 
-### Agent Coordination
-
-Agents follow a structured delegation model:
-
-1. **Vertical delegation** — directors delegate to leads, leads delegate to specialists
-2. **Horizontal consultation** — same-tier agents can consult each other but can't make binding cross-domain decisions
-3. **Conflict resolution** — disagreements escalate up to the shared parent (`creative-director` for design, `technical-director` for technical)
-4. **Change propagation** — cross-department changes are coordinated by `producer`
-5. **Domain boundaries** — agents don't modify files outside their domain without explicit delegation
-
-### Collaborative, Not Autonomous
-
-This is **not** an auto-pilot system. Every agent follows a strict collaboration protocol:
-
-1. **Ask** — agents ask questions before proposing solutions
-2. **Present options** — agents show 2-4 options with pros/cons
-3. **You decide** — the user always makes the call
-4. **Draft** — agents show work before finalizing
-5. **Approve** — nothing gets written without your sign-off
-
-You stay in control. The agents provide structure and expertise, not autonomy.
-
-### Automated Safety
-
-**Hooks** run automatically on every session:
-
-| Hook | Trigger | What It Does |
-|------|---------|--------------|
-| `validate-commit.sh` | `git commit` | Checks for hardcoded values, TODO format, JSON validity, design doc sections |
-| `validate-push.sh` | `git push` | Warns on pushes to protected branches |
-| `validate-assets.sh` | File writes in `assets/` | Validates naming conventions and JSON structure |
-| `session-start.sh` | Session open | Loads sprint context and recent git activity |
-| `detect-gaps.sh` | Session open | Detects fresh projects (suggests `/start`) and missing documentation when code/prototypes exist |
-| `pre-compact.sh` | Context compression | Preserves session progress notes |
-| `session-stop.sh` | Session close | Logs accomplishments |
-| `log-agent.sh` | Agent spawned | Audit trail of all subagent invocations |
-
-**Permission rules** in `settings.json` auto-allow safe operations (git status, test runs) and block dangerous ones (force push, `rm -rf`, reading `.env` files).
-
-### Path-Scoped Rules
-
-Coding standards are automatically enforced based on file location:
-
-| Path | Enforces |
-|------|----------|
-| `src/gameplay/**` | Data-driven values, delta time usage, no UI references |
-| `src/core/**` | Zero allocations in hot paths, thread safety, API stability |
-| `src/ai/**` | Performance budgets, debuggability, data-driven parameters |
-| `src/networking/**` | Server-authoritative, versioned messages, security |
-| `src/ui/**` | No game state ownership, localization-ready, accessibility |
-| `design/gdd/**` | Required 8 sections, formula format, edge cases |
-| `tests/**` | Test naming, coverage requirements, fixture patterns |
-| `prototypes/**` | Relaxed standards, README required, hypothesis documented |
-
-## Design Philosophy
-
-This template is grounded in professional game development practices:
-
-- **MDA Framework** — Mechanics, Dynamics, Aesthetics analysis for game design
-- **Self-Determination Theory** — Autonomy, Competence, Relatedness for player motivation
-- **Flow State Design** — Challenge-skill balance for player engagement
-- **Bartle Player Types** — Audience targeting and validation
-- **Verification-Driven Development** — Tests first, then implementation
-
-## Customization
-
-This is a **template**, not a locked framework. Everything is meant to be customized:
-
-- **Add/remove agents** — delete agent files you don't need, add new ones for your domains
-- **Edit agent prompts** — tune agent behavior, add project-specific knowledge
-- **Modify skills** — adjust workflows to match your team's process
-- **Add rules** — create new path-scoped rules for your project's directory structure
-- **Tune hooks** — adjust validation strictness, add new checks
-- **Pick your engine** — use the Godot, Unity, or Unreal agent set (or none)
-
-## Platform Support
-
-Tested on **Windows 10** with Git Bash. All hooks use POSIX-compatible patterns (`grep -E`, not `grep -P`) and include fallbacks for missing tools. Works on macOS and Linux without modification.
-
-## Community
-
-- **Discussions** — [GitHub Discussions](https://github.com/Donchitos/Claude-Code-Game-Studios/discussions) for questions, ideas, and showcasing what you've built
-- **Issues** — [Bug reports and feature requests](https://github.com/Donchitos/Claude-Code-Game-Studios/issues)
-
+### Best Practice Tips
+-   **Checkpointing:**  Use  `/checkpoint`  when a key decision is made (e.g., during design discussions). Follow up with  `/clear`  or  `/compact`  to manage context window size efficiently.
+-   **Session Flow:**  Always end a session using  `/checkpoint`  to save the state. Resume work later using  `claude /resume`  to restore the context.
+-   **Planning:**  Use  `/next`  to prompt the agent to analyze the current state and determine the optimal next action.
 ---
 
-*This project is under active development. The agent architecture, skills, and coordination system are solid and usable today — but there's more coming.*
+## Attribution
 
-## License
+CCGS: Technica Edition is a fork of **CCGS — Claude Code Game Studios** by **Donchitos**, licensed under MIT.
 
-MIT License. See [LICENSE](LICENSE) for details.
+Original repository: https://github.com/Donchitos/Claude-Code-Game-Studios
+
+All additions and modifications are by Technica Games. The MIT license text and original copyright notice are retained in all distributions.
