@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="./media/TechnicaLogoTransparentBG_120x120.png" />
   <h1 align="center">Claude Code Game Studios: Technica Edition</h1>
   <p align="center">
     A CCGS fork that enhance AI agent game development framework with publishing workflow.
