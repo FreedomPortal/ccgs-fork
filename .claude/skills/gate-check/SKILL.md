@@ -383,6 +383,15 @@ Art Director:       [READY / CONCERNS / NOT READY]
 - **FAIL**: Critical blockers must be resolved before advancing
 ```
 
+**Immediately after generating the verdict above**, write the draft to disk:
+
+```
+production/session-state/drafts/gate-check-[phase]-YYYYMMDD-HHMMSS.md
+```
+
+Create `production/session-state/drafts/` if it does not exist.
+This draft survives crashes before the Section 6 write approval.
+
 ---
 
 ## 5a. Chain-of-Verification

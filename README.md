@@ -11,8 +11,8 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-52-blueviolet" alt="52 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-105-green" alt="105 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-13-orange" alt="13 Hooks"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-106-green" alt="106 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-14-orange" alt="14 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-11-red" alt="11 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
   <br />
@@ -91,6 +91,7 @@ Handles localization execution under `localization-lead` direction. String wrapp
 | `/setup-tool` | Configure a standalone tool project — creates `TOOL_SPEC.md`, routes to `game-pipeline-developer` |
 | `/continue` | Read session state and agent memory; present a brief so you pick up immediately where you left off |
 | `/checkpoint` | Flush session discoveries to agent memory files — call proactively before crashes or `/clear` |
+| `/autosave-mode` | Configure crash-protection level for long tasks: `off` / `remind` / `enforce` — set once per project, survives sessions |
 | `/log-lesson` | Encode a lesson from external review, playtesting, or press feedback into `production/publishing/writing-lessons.md` |
 
 ---
@@ -169,13 +170,27 @@ Handles localization execution under `localization-lead` direction. String wrapp
 
 ---
 
-## New Hook
+## New Hooks
 
 ### `memory-checkpoint.sh`
 **Event:** `PostToolUse` (Write \| Edit)
 **Function:** After every file write or edit, checks whether the change contains cross-session-relevant information and prompts agent memory update if so.
 
 This hook makes `/checkpoint` semi-automatic. The manual `/checkpoint` skill is still needed for deliberate end-of-session flushes.
+
+---
+
+### `pre-approval-check.sh`
+**Event:** `PreToolUse` (AskUserQuestion)
+**Function:** Intercepts approval-gate questions ("May I write…", "write this sprint plan…", etc.) and enforces the Draft-First Protocol based on `production/autosave-mode.txt`:
+
+| Mode | Behavior |
+|------|----------|
+| `off` | No action — passes through immediately |
+| `remind` | Prints stderr reminder to write draft before approval (default) |
+| `enforce` | Blocks with exit 2 unless a draft file exists in `production/session-state/drafts/` modified within the last 3 minutes |
+
+Configure with `/autosave-mode` or set directly in `production/autosave-mode.txt`.
 
 ---
 
@@ -192,6 +207,19 @@ The most significant architectural addition. Three parts work together:
 
 ### `/help` → `/next`
 Base CCGS used `/help` as the "what do I do next?" navigation skill. This conflicts with Claude Code's built-in `/help` command. Renamed to `/next` in CCGS:TE. All internal references updated.
+
+### Draft-First Protocol (Crash Resilience)
+
+Skills that do expensive multi-agent work — code review, sprint planning, architecture review, gate checks, design review — now write their output to `production/session-state/drafts/` **before** asking for approval. If a crash or token limit hits at the `[y/N]` prompt, the draft survives and the maximum rework is re-running the approval step, not the entire task.
+
+The `SubagentStop` hook was extended to also write each subagent's final output to `drafts/` — so if a parent session dies after a programmer subagent finishes writing code, the implementation summary is recoverable.
+
+Configure the enforcement level with `/autosave-mode` (or set at onboarding via `/start`):
+- `off` — no protection
+- `remind` — Claude gets a reminder before each approval gate (default)
+- `enforce` — hard block until a draft file is confirmed on disk
+
+---
 
 ### `writing-lessons.md` Knowledge Base
 Located at `production/publishing/writing-lessons.md`. All `/export-*` skills read this file before generating output. Use `/log-lesson` to add entries. Format: context → problem → rule → example. Decisions marked as settled are not re-debated by agents.
@@ -296,6 +324,7 @@ If you need to keep the original CCGS history accessible while pulling the speci
 -   **Checkpointing:**  Use  `/checkpoint`  when a key decision is made (e.g., during design discussions). Follow up with  `/clear`  or  `/compact`  to manage context window size efficiently.
 -   **Session Flow:**  Always end a session using  `/checkpoint`  to save the state. Resume work later using  `claude /continue`  to restore the context.
 -   **Planning:**  Use  `/next`  to prompt the agent to analyze the current state and determine the optimal next action.
+-   **Crash Protection:**  Run `/autosave-mode` once per project to set your protection level. Use `enforce` on unstable machines or during long multi-agent reviews. Drafts accumulate in `production/session-state/drafts/` and can be safely deleted after each session.
 ---
 
 ## Attribution

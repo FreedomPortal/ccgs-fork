@@ -179,7 +179,14 @@ Label clearly: "Rough scope signal: M (producer should verify before sprint plan
 ### Verdict: [APPROVED / NEEDS REVISION / MAJOR REVISION NEEDED]
 ```
 
-This skill is read-only — no files are written during Phase 4.
+**Immediately after generating the review output above**, write the draft to disk:
+
+```
+production/session-state/drafts/design-review-[doc-name]-YYYYMMDD-HHMMSS.md
+```
+
+Create `production/session-state/drafts/` if it does not exist.
+This draft survives crashes before the user answers the Phase 5 approval questions.
 
 ---
 

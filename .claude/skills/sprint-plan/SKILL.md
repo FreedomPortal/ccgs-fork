@@ -102,6 +102,15 @@ For `new`:
 - [ ] Code reviewed and merged
 ```
 
+**Immediately after generating the plan output above**, write the draft to disk:
+
+```
+production/session-state/drafts/sprint-[N]-draft-YYYYMMDD-HHMMSS.md
+```
+
+Create `production/session-state/drafts/` if it does not exist.
+This draft survives crashes before the Phase 4 approval gate.
+
 For `status`:
 
 **Generate a status report**:

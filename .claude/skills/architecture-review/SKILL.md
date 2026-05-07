@@ -447,6 +447,15 @@ FAIL: Critical gaps (Foundation/Core layer requirements uncovered),
 [Prioritised list of ADRs to create, most foundational first]
 ```
 
+**Immediately after generating the report above**, write the draft to disk:
+
+```
+production/session-state/drafts/architecture-review-YYYYMMDD-HHMMSS.md
+```
+
+Create `production/session-state/drafts/` if it does not exist.
+This draft survives crashes before Phase 8 approval questions.
+
 ---
 
 ## Phase 8: Write and Update Traceability Index

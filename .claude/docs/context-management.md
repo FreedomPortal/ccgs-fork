@@ -89,6 +89,41 @@ When creating multi-section documents (design docs, architecture docs, lore entr
 This keeps the context window holding only the *current* section's discussion
 (~3-5k tokens) instead of the entire document's conversation history (~30-50k tokens).
 
+## Draft-First Protocol
+
+**Write output before asking for approval — never the reverse.** Work products that
+take more than a few seconds to generate must be written to disk before the approval
+gate. Crashes, token limits, and computer restarts can strike at the `[y/N]` prompt.
+
+**Rule:** Before any `AskUserQuestion` that asks for write approval ("May I write X?"),
+write the work product to:
+
+```
+production/session-state/drafts/[skill]-draft-YYYYMMDD-HHMMSS.md
+```
+
+Then ask for approval. If approved: write to final destination. If crashed before
+approval: draft persists on disk for recovery — maximum rework is re-running the
+approval step, not the entire task.
+
+Draft files live in `production/session-state/` (gitignored). Cheap to keep,
+invaluable when something goes wrong.
+
+**Autosave enforcement level** is configured in `production/autosave-mode.txt`:
+- `off` — no reminders or blocks (reliable machine, fast iteration)
+- `remind` — stderr reminder before approval gates (default if file missing)
+- `enforce` — hard block until a draft file exists in `drafts/` (modified within 3 min)
+
+Change the level with `/autosave-mode`.
+
+**Skills that follow this protocol** (output is expensive to regenerate):
+- `/code-review` — draft written to `drafts/` before Phase 9
+- `/design-review` — draft written to `drafts/` before Phase 5
+- `/sprint-plan` — draft written to `drafts/` before Phase 4 approval gate
+- `/architecture-review` — draft written to `drafts/` before Phase 8 approval
+- `/gate-check` — draft written to `drafts/` before Section 6 write approval
+- **Subagents** (via `/dev-story`) — `SubagentStop` hook writes implementation summary to `drafts/`
+
 ## Proactive Compaction
 
 - **Compact proactively** at ~60-70% context usage, not reactively at the limit
