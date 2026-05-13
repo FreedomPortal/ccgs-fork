@@ -5,8 +5,26 @@ argument-hint: "[scan|extract|validate|status|brief|cultural-review|vo-pipeline|
 user-invocable: true
 agent: localization-lead
 allowed-tools: Read, Glob, Grep, Write, Bash, Task, AskUserQuestion
-model: sonnet
 ---
+
+> **DEPRECATED** — This monolithic skill has been replaced by the modular localization pipeline.
+> Use the new skills instead:
+>
+> | Old command | New command |
+> |-------------|-------------|
+> | `/localize scan` | `/localization-prepare scan` |
+> | `/localize extract` | `/localization-prepare wrap` |
+> | `/localize status` | `/localization-sync status` |
+> | `/localize brief` | `/localization-integrate export` |
+> | `/localize validate` | `/localization-integrate import [locale] [path]` |
+> | `/localize freeze` (set) | `/localization-integrate export` (freeze called at end) |
+> | `/localize freeze` (lift) | `/localization-integrate freeze lift` |
+> | `/localize qa` | `/localization-qa [locale]` |
+> | `/localize cultural-review` | `/localization-cultural-review` |
+> | `/localize vo-pipeline` | `/localization-vo [scan\|script\|validate\|integrate]` |
+> | `/localize rtl-check` | `/localization-rtl [locale]` |
+>
+> This file is retained for historical reference only. Do not invoke this skill for new work.
 
 # Localization Pipeline
 

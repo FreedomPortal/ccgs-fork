@@ -18,11 +18,11 @@ Skills and agents are assigned to model tiers based on task complexity:
 
 | Tier | Model | When to use |
 |------|-------|-------------|
-| **Haiku** | `claude-haiku-4-5-20251001` | Read-only status checks, formatting, simple lookups â€” no creative judgment needed |
-| **Sonnet** | `claude-sonnet-4-6` | Implementation, design authoring, analysis of individual systems â€” default for most work |
+| **Haiku** | `claude-haiku-4-5-20251001` | Read-only status checks, formatting, simple lookups — no creative judgment needed |
+| **Sonnet** | `claude-sonnet-4-6` | Implementation, design authoring, analysis of individual systems — default for most work |
 | **Opus** | `claude-opus-4-6` | Multi-document synthesis, high-stakes phase gate verdicts, cross-system holistic review |
 
-Skills with `model: haiku`: `/help`, `/sprint-status`, `/story-readiness`, `/scope-check`,
+Skills with `model: haiku`: `/next`, `/sprint-status`, `/story-readiness`, `/scope-check`,
 `/project-stage-detect`, `/changelog`, `/patch-notes`, `/onboard`
 
 Skills with `model: opus`: `/review-all-gdds`, `/architecture-review`, `/gate-check`
@@ -43,9 +43,9 @@ sequentially or in parallel within the session, and return results to the parent
 **When to spawn in parallel**: If two subagents' inputs are independent (neither
 needs the other's output to begin), spawn both Task calls simultaneously rather
 than waiting. Example: `/review-all-gdds` Phase 1 (consistency) and Phase 2
-(design theory) are independent â€” spawn both at the same time.
+(design theory) are independent — spawn both at the same time.
 
-### Agent Teams (experimental â€” opt-in)
+### Agent Teams (experimental — opt-in)
 Multiple independent Claude Code *sessions* running simultaneously, coordinated
 via a shared task list. Each session has its own context window and token budget.
 Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable.
@@ -59,7 +59,7 @@ Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable.
 **Do not use agent teams when**:
 - One session's output is required as input for another (use sequential subagents)
 - The task fits in a single session's context (use subagents instead)
-- Cost is a concern â€” each team member burns tokens independently
+- Cost is a concern — each team member burns tokens independently
 
 **Current status**: Opt-in via `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. Document first usage here when adopted.
 
@@ -69,5 +69,5 @@ When an orchestration skill spawns multiple independent agents:
 
 1. Issue all independent Task calls before waiting for any result
 2. Collect all results before proceeding to dependent phases
-3. If any agent is BLOCKED, surface it immediately â€” do not silently skip
+3. If any agent is BLOCKED, surface it immediately — do not silently skip
 4. Always produce a partial report if some agents complete and others block

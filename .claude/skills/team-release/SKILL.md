@@ -122,6 +122,12 @@ Delegate to **community-manager** (in parallel with deployment):
 - Draft known issues post if any S3+ issues shipped
 - Output: all player-facing release communication, ready to publish on deploy confirmation
 
+Delegate to **community-manager** (in parallel with deployment):
+- Finalize patch notes using `/patch-notes [version]`
+- Prepare launch announcement (store page updates, social media, community post)
+- Draft known issues post if any S3+ issues shipped
+- Output: all player-facing release communication, ready to publish on deploy confirmation
+
 ### Phase 7: Post-Release
 - **release-manager**: Generate release report (what shipped, what was deferred, metrics)
 - **producer**: Update milestone tracking, communicate to stakeholders

@@ -27,4 +27,18 @@ mkdir -p "$SESSION_LOG_DIR" 2>/dev/null
 
 echo "$TIMESTAMP | Agent completed: $AGENT_NAME" >> "$SESSION_LOG_DIR/agent-audit.log" 2>/dev/null
 
+# Write subagent's final output to drafts for crash recovery
+# Protects implementation summaries if parent session dies after subagent completes
+LAST_MSG=$(echo "$INPUT" | jq -r '.last_assistant_message // empty' 2>/dev/null)
+if [ -n "$LAST_MSG" ]; then
+    DRAFTS_DIR="production/session-state/drafts"
+    mkdir -p "$DRAFTS_DIR" 2>/dev/null
+    DRAFT_FILE="$DRAFTS_DIR/subagent-${AGENT_NAME}-${TIMESTAMP}.md"
+    {
+        echo "# Subagent Output: $AGENT_NAME — $TIMESTAMP"
+        echo ""
+        echo "$LAST_MSG"
+    } > "$DRAFT_FILE" 2>/dev/null
+fi
+
 exit 0

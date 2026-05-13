@@ -9,7 +9,7 @@ model: sonnet
 
 # Guided Onboarding
 
-This skill writes one file: `production/review-mode.txt` (review mode config set in Phase 3b).
+This skill writes two files: `production/review-mode.txt` (Phase 3b) and `production/autosave-mode.txt` (Phase 3c).
 
 This skill is the entry point for new users. It does NOT assume you have a game idea, an engine preference, or any prior experience. It asks first, then routes you to the right workflow.
 
@@ -25,7 +25,12 @@ Check:
 - **Source code exists?** Glob for source files in `src/` (`*.gd`, `*.cs`, `*.cpp`, `*.h`, `*.rs`, `*.py`, `*.js`, `*.ts`).
 - **Prototypes exist?** Check for subdirectories in `prototypes/`.
 - **Design docs exist?** Count markdown files in `design/gdd/`.
-- **Production artifacts?** Check for files in `production/sprints/` or `production/milestones/`.
+- **Production artifacts?** Check for files in `production/sprints/` or
+  `production/milestones/`.
+- **Tooling project?** Check for scripts in `tools/` (`*.py`, `*.js`, `*.ts`,
+  `*.cs`, `*.rs`) and for `tools/TOOL_SPEC.md`. If scripts exist in `tools/`
+  but no engine is configured and no game concept exists, flag this internally
+  as a likely tooling project.
 
 Store these findings internally to validate the user's self-assessment and tailor recommendations.
 
@@ -41,6 +46,7 @@ This is the first thing the user sees. Use `AskUserQuestion` with these exact op
   - `B) Vague idea` — I have a rough theme, feeling, or genre in mind (e.g., "something with space" or "a cozy farming game") but nothing concrete.
   - `C) Clear concept` — I know the core idea — genre, basic mechanics, maybe a pitch sentence — but haven't formalized it into documents yet.
   - `D) Existing work` — I already have design docs, prototypes, code, or significant planning done. I want to organize or continue the work.
+  - `E) Building a tool` — I'm not making a game right now. I'm building a script or tool that supports game development (level generator, asset exporter, data processor, pipeline automation, etc.).
 
 Wait for the user's selection. Do not proceed until they respond.
 
@@ -165,9 +171,28 @@ The user needs creative exploration before anything else.
    - `/architecture-review` — bootstrap the TR requirement registry
    - `/gate-check` — validate readiness for next phase
 
+#### If E: Building a tool
+
+The user is building a pipeline script or game development tool, not a game itself.
+Engine setup, GDDs, and sprint planning don't apply here.
+
+1. Acknowledge the tooling path — this is a supported workflow
+2. Share what you found in Step 1 if relevant:
+   - "I can see scripts already exist in `tools/`..." (if detected)
+   - "A `TOOL_SPEC.md` [exists / doesn't exist yet]..." (if detected)
+3. If `TOOL_SPEC.md` already exists:
+   - "You're already set up. Want to pick up where you left off, or review the spec?"
+   - Suggest `/code-review tools/` or just continuing development
+4. If no spec exists yet, recommend `/setup-tool` as the first step
+5. Show the recommended path:
+   - `/setup-tool` — define the tool's purpose, I/O, and tech stack
+   - `/reverse-document` — if the tool already exists, generate docs from the code
+   - `/code-review tools/` — review quality of existing scripts
+   - `/architecture-decision` — record significant design choices
+
 ---
 
-## Phase 3c: Write Initial Stage File
+## Phase 3a: Write Initial Stage File
 
 After confirming the starting path (and before asking about review mode), write the initial stage to `production/stage.txt`. Create the `production/` directory if it does not exist.
 
@@ -208,6 +233,27 @@ Create the `production/` directory if it does not exist.
 
 ---
 
+## Phase 3c: Set Autosave Mode
+
+Check if `production/autosave-mode.txt` already exists.
+
+**If it exists**: Read it and show the current mode — "Autosave mode is set to `[current]`." — then proceed to Phase 4. Do not ask again.
+
+**If it does not exist**: Use `AskUserQuestion`:
+
+- **Prompt**: "Last setup choice: how should Claude protect against crashes and token limits during long tasks like code review and sprint planning?"
+- **Options**:
+  - `Enforce (hard block)` — Claude cannot ask for approval until it has written the work product to disk first. Best for unstable machines or high-stakes production work.
+  - `Remind (recommended)` — Claude gets a reminder to save before approval gates. Non-blocking but relies on Claude following through.
+  - `Off` — No protection. Best for reliable machines or when you want maximum iteration speed.
+
+Write the choice to `production/autosave-mode.txt` immediately — no separate "May I write?" needed:
+- `Enforce (hard block)` → write `enforce`
+- `Remind (recommended)` → write `remind`
+- `Off` → write `off`
+
+---
+
 ## Phase 4: Confirm Before Proceeding
 
 After presenting the recommended path, use `AskUserQuestion` to ask the user which step they'd like to take first. Never auto-run the next skill.
@@ -229,9 +275,11 @@ Verdict: **COMPLETE** — user oriented and handed off to next step.
 
 ## Edge Cases
 
+
 - **User picks D but project is empty**: Gently redirect — "It looks like the project is a fresh template with no artifacts yet. Would Path A or B be a better fit?"
 - **User picks A but project has code**: Mention what you found — "I noticed there's already code in `src/`. Did you mean to pick D (existing work)?"
 - **User is returning (engine configured, concept exists)**: Skip onboarding entirely — "It looks like you're already set up! Your engine is [X] and you have a game concept at `design/gdd/game-concept.md`. Review mode: `[read from production/review-mode.txt, or 'lean (default)' if missing]`. Want to pick up where you left off? Try `/sprint-plan` or just tell me what you'd like to work on."
+- **User is returning (tool spec exists)**: Skip onboarding entirely — "It looks like you're already set up with a tooling project. Your spec is at `tools/TOOL_SPEC.md`. Want to pick up where you left off?"
 - **User doesn't fit any option**: Let them describe their situation in their own words and adapt.
 
 ---

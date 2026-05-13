@@ -1,6 +1,12 @@
 MIT License
 
-Copyright (c) 2026 Donchitos
+Original Claude Code Game Studio framework:
+  Copyright (c) 2026 Donchitos
+  https://github.com/donchitos/ccgs
+
+CCGS: Technica Edition additions:
+  Copyright (c) 2026 Technica Games
+  https://github.com/FreedomPortal/ccgs-technica-edition
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -242,6 +242,21 @@ A depends on B). If any cycle is detected (e.g. A→B→A, or A→B→C→A):
 - [ ] Store metadata prepared (if applicable)
 - [ ] Changelog / patch notes drafted
 
+**Publishing Readiness** *(blocking — all four must exist before gate can PASS)*:
+- [ ] `production/publishing/publishing-roadmap.md` exists
+- [ ] `production/publishing/community-status.md` exists
+- [ ] Store page draft exists (Glob `production/publishing/store-page*`)
+- [ ] Press kit exists (Glob `production/publishing/presskit*`)
+
+If any publishing artifact is missing:
+1. List exactly which are missing
+2. Suggest the skill to create it:
+   - `publishing-roadmap.md` → `/marketing-plan`
+   - `community-status.md` → `/community-plan`
+   - Store page → `/export-steam-page`
+   - Press kit → `/press-outreach`
+3. Mark verdict FAIL — do not advance until all four are present.
+
 **Quality Checks:**
 - [ ] Full QA pass signed off by `qa-lead`
 - [ ] All tests passing
@@ -251,6 +266,10 @@ A depends on B). If any cycle is detected (e.g. A→B→A, or A→B→C→A):
 - [ ] Localization verified for all target languages
 - [ ] Legal requirements met (EULA, privacy policy, age ratings if applicable)
 - [ ] Build compiles and packages cleanly
+
+**Additional Director** *(this gate only)*: spawn `release-manager` via Task using
+gate **RM-PHASE-GATE** (`.claude/docs/director-gates.md`) in parallel with the four
+standard PHASE-GATEs.
 
 ---
 
@@ -382,6 +401,15 @@ Art Director:       [READY / CONCERNS / NOT READY]
 - **FAIL**: Critical blockers must be resolved before advancing
 ```
 
+**Immediately after generating the verdict above**, write the draft to disk:
+
+```
+production/session-state/drafts/gate-check-[phase]-YYYYMMDD-HHMMSS.md
+```
+
+Create `production/session-state/drafts/` if it does not exist.
+This draft survives crashes before the Section 6 write approval.
+
 ---
 
 ## 5a. Chain-of-Verification
@@ -390,12 +418,10 @@ After drafting the verdict in Phase 5, challenge it before finalising.
 
 **Step 1 — Generate 5 challenge questions** designed to disprove the verdict:
 
-> **Tool-action requirement**: At least 2 of the 5 challenge questions below must be answered by re-reading a specific file (Read tool) or re-running a specific check (Grep tool) — not by reflection alone. Mark these with [TOOL ACTION] to indicate a tool was used.
-
 For a **PASS** draft:
 - "Which quality checks did I verify by actually reading a file, vs. inferring they passed?"
-- "Are there MANUAL CHECK NEEDED items I marked PASS without user confirmation? [TOOL ACTION] Re-scan the checklist for any [?] or MANUAL CHECK items."
-- "Did I confirm all listed artifacts have real content, not just empty headers? [TOOL ACTION] Re-read the file and check it has non-placeholder content."
+- "Are there MANUAL CHECK NEEDED items I marked PASS without user confirmation?"
+- "Did I confirm all listed artifacts have real content, not just empty headers?"
 - "Could any blocker I dismissed as minor actually prevent the phase from succeeding?"
 - "Which single check am I least confident in, and why?"
 
@@ -519,7 +545,7 @@ Based on the verdict, suggest specific next steps:
 - **No player journey map?** → Create `design/player-journey.md` from the template at `.claude/docs/templates/player-journey.md` — or author it collaboratively using `/ux-design` Phase 2b.
 - **Need a quick sprint check?** → `/sprint-status` for current sprint progress snapshot
 - **Performance unknown?** → `/perf-profile`
-- **Not localized?** → `/localize`
+- **Not localized?** → `/localization-prepare scan` to start (then `wrap` → `integrate export` → `qa`)
 - **Ready for release?** → `/launch-checklist`
 
 ---

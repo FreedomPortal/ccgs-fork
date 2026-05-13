@@ -1,5 +1,5 @@
 # Workflow Catalog
-# Used by /help to determine where a user is and what comes next.
+# Used by /next to determine where a user is and what comes next.
 #
 # Artifact checks:
 #   glob: file glob pattern — complete if ≥1 file matches (or min_count)

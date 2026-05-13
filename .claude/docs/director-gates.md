@@ -524,15 +524,47 @@ is invoked
 - Sprint and milestone artifacts present
 - Team size and capacity
 - Current blocked story count
+- Runway estimate (months/budget remaining) — if known
+
+**Solo Dev Viability Check** *(always runs — required before any READY verdict)*:
+
+Before returning a verdict, answer these three questions. Each must be YES or NO
+with a one-sentence justification. A NO does not fail the gate — it becomes a
+flagged risk the developer must explicitly acknowledge before the gate advances.
+
+1. **Scope achievable?** — Is the remaining scope achievable by one person before the runway runs out?
+2. **Release date alignment?** — Does the projected release date align with the marketing calendar? (Answer N/A if no marketing calendar exists.)
+3. **Scope creep check?** — Are there scope creep risks relative to the original concept GDD?
+
+Required output format:
+```
+Solo Dev Viability Check:
+1. Scope achievable: YES/NO — [one sentence]
+2. Release date alignment: YES/NO/N/A — [one sentence]
+3. Scope creep risks: YES/NO — [one sentence]
+Flagged risks: [bulleted list of any NO answers, or "none"]
+```
 
 **Prompt**:
 > "Review the current project state for [target phase] gate readiness from a
-> production perspective. Is the scope realistic for the stated timeline and team
-> size? Are dependencies properly ordered so the team can actually execute in
-> sequence? Are there milestone or sprint risks that could derail the phase within
-> the first two sprints? Return READY, CONCERNS [list], or NOT READY [blockers]."
+> production perspective. Begin with the Solo Dev Viability Check: answer three
+> YES/NO questions with one-sentence justifications — (1) Is the remaining scope
+> achievable by one person before the runway runs out? (2) Does the projected
+> release date align with the marketing calendar (N/A if none exists)? (3) Are
+> there scope creep risks relative to the original concept GDD? Format the check
+> results first, then assess: Is the scope realistic for the stated timeline and
+> team size? Are dependencies properly ordered so the team can actually execute
+> in sequence? Are there milestone or sprint risks that could derail the phase
+> within the first two sprints? Return READY, CONCERNS [list], or NOT READY
+> [blockers]."
 
 **Verdicts**: READY / CONCERNS / NOT READY
+
+**Verdict handling for flagged risks**: If the viability check contains any NO
+answers, the invoking skill must pause and surface them to the user via
+`AskUserQuestion` before advancing — options: `Acknowledge risk and proceed` /
+`Revise scope before advancing`. A READY verdict with flagged risks must not
+auto-advance the gate until the user explicitly acknowledges.
 
 ---
 
@@ -693,6 +725,35 @@ as part of `/code-review`
 
 ---
 
+### RM-PHASE-GATE — Publishing Readiness at Release
+
+**Trigger**: At `/gate-check` Polish → Release only — spawn alongside the four
+standard PHASE-GATEs
+
+**Context to pass**:
+- List of publishing artifacts present (`production/publishing/` contents)
+- Publishing roadmap path (if exists)
+- Community status path (if exists)
+- Store page draft path (if found)
+- Press kit path (if found)
+
+**Prompt**:
+> "Review publishing readiness for the Release gate. Verify these four artifacts
+> exist and have meaningful content: (1) publishing-roadmap.md, (2)
+> community-status.md, (3) a store page draft, (4) a press kit. For each missing
+> artifact, name the specific skill to create it: `/marketing-plan` for the
+> roadmap, `/community-plan` for community status, `/export-steam-page` for the
+> store page, `/press-outreach` for the press kit. Beyond existence, assess: Is
+> the publishing roadmap realistic for the release date? Is the community strategy
+> appropriate for the game's genre and audience? Does the store page draft have
+> sufficient content to publish? Return READY (all publishing artifacts present
+> and substantive), CONCERNS [list], or NOT READY [missing artifacts — list each
+> one and the skill to create it]."
+
+**Verdicts**: READY / CONCERNS / NOT READY
+
+---
+
 ### QL-TEST-COVERAGE — QA Lead Test Coverage Review
 
 **Trigger**: After implementation stories are complete, before marking an epic
@@ -801,6 +862,6 @@ When a new gate is needed for a new skill or workflow:
 | **Systems Design** | TD-SYSTEM-BOUNDARY, CD-SYSTEMS, PR-SCOPE, CD-GDD-ALIGN (per GDD) | ND-CONSISTENCY, AD-VISUAL |
 | **Technical Setup** | TD-ARCHITECTURE, TD-ADR (per ADR), LP-FEASIBILITY, AD-ART-BIBLE | TD-ENGINE-RISK |
 | **Pre-Production** | PR-EPIC, QL-STORY-READY (per story), PR-SPRINT, all four PHASE-GATEs (via gate-check) | CD-PLAYTEST |
-| **Production** | LP-CODE-REVIEW (per story), QL-STORY-READY, PR-SPRINT (per sprint), QL-TEST-COVERAGE (per sprint close-out) | PR-MILESTONE, AD-VISUAL |
+| **Production** | LP-CODE-REVIEW (per story), QL-STORY-READY, PR-SPRINT (per sprint) | PR-MILESTONE, QL-TEST-COVERAGE (per sprint close-out), AD-VISUAL |
 | **Polish** | QL-TEST-COVERAGE, CD-PLAYTEST, PR-MILESTONE | AD-VISUAL |
-| **Release** | All four PHASE-GATEs (via gate-check) | QL-TEST-COVERAGE |
+| **Release** | All four PHASE-GATEs + RM-PHASE-GATE (via gate-check) | QL-TEST-COVERAGE |

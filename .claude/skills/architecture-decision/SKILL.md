@@ -243,6 +243,7 @@ Following this format:
 
 | Field | Value |
 |-------|-------|
+| **Engine** | [e.g. Godot 4.6/ Unity 6 / Unreal Engine 5.4] |
 | **Engine** | [e.g. Godot 4.6] |
 | **Domain** | [Physics / Rendering / UI / Audio / Navigation / Animation / Networking / Core / Input] |
 | **Knowledge Risk** | [LOW / MEDIUM / HIGH — from VERSION.md] |

@@ -3,7 +3,7 @@ name: code-review
 description: "Performs an architectural and quality code review on a specified file or set of files. Checks for coding standard compliance, architectural pattern adherence, SOLID principles, testability, and performance concerns."
 argument-hint: "[path-to-file-or-directory]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Bash, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Bash, Task, Write, AskUserQuestion
 model: sonnet
 agent: lead-programmer
 ---
@@ -163,7 +163,19 @@ Collect all specialist findings before producing output.
 ### Verdict: [APPROVED / APPROVED WITH SUGGESTIONS / CHANGES REQUIRED]
 ```
 
-This skill is read-only — no files are written.
+---
+
+## Phase 8.5: Write Review Draft
+
+Before next steps, write the full review output to disk:
+
+```
+production/session-state/drafts/code-review-YYYYMMDD-HHMMSS.md
+```
+
+Create `production/session-state/drafts/` if it does not exist.
+This draft survives crashes, token limits, and computer restarts.
+The review is now preserved regardless of what happens at the approval prompt.
 
 ---
 

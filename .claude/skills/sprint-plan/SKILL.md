@@ -43,6 +43,14 @@ See `.claude/docs/director-gates.md` for the full check pattern.
 
 4. **Check the risk register** at `production/risk-register/`.
 
+5. **Check for pipeline tooling work** — `Glob` for `tools/TOOL_SPEC.md`.
+   - **Found**: Read it to identify the tool name and purpose. Then ask:
+     > "I found `tools/TOOL_SPEC.md` — [tool name]: [one-line purpose]. How many
+     > sprint points do you want to allocate to pipeline tooling this sprint?
+     > What work needs doing? (Enter 0 or skip to omit tooling from this sprint.)"
+     Store the allocation and task descriptions for use in Phase 2.
+   - **Not found**: Continue — tooling section is omitted from the sprint plan.
+
 ---
 
 ## Phase 2: Generate Output
@@ -61,6 +69,7 @@ For `new`:
 - Total days: [X]
 - Buffer (20%): [Y days reserved for unplanned work]
 - Available: [Z days]
+- Tooling allocation: [N points]  *(omit this line if no tooling work this sprint)*
 
 ## Tasks
 
@@ -75,6 +84,12 @@ For `new`:
 ### Nice to Have
 | ID | Task | Agent/Owner | Est. Days | Dependencies | Acceptance Criteria |
 |----|------|-------------|-----------|-------------|-------------------|
+
+## Pipeline Tools  *(omit this section if tools/TOOL_SPEC.md not found or allocation is 0)*
+| ID | Task | Est. Points | Acceptance Criteria |
+|----|------|-------------|-------------------|
+
+*Tasks here draw from the tooling allocation, not the game capacity pool.*
 
 ## Carryover from Previous Sprint
 | Task | Reason | New Estimate |
@@ -98,6 +113,15 @@ For `new`:
 - [ ] Design documents updated for any deviations
 - [ ] Code reviewed and merged
 ```
+
+**Immediately after generating the plan output above**, write the draft to disk:
+
+```
+production/session-state/drafts/sprint-[N]-draft-YYYYMMDD-HHMMSS.md
+```
+
+Create `production/session-state/drafts/` if it does not exist.
+This draft survives crashes before the Phase 4 approval gate.
 
 For `update`:
 
