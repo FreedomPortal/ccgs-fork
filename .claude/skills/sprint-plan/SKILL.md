@@ -263,7 +263,7 @@ stories:
   - id: "[epic-story, e.g. 1-1]"
     name: "[story name]"
     file: "[production/stories/path.md]"
-    priority: must-have        # must-have | should-have | nice-to-have
+    priority: must-have        # must-have | should-have | nice-to-have | tooling
     status: ready-for-dev      # backlog | ready-for-dev | in-progress | review | done | blocked
     owner: ""
     estimate_days: 0
@@ -275,6 +275,7 @@ Initialize each story from the sprint plan's task tables:
 - Must Have tasks → `priority: must-have`, `status: ready-for-dev`
 - Should Have tasks → `priority: should-have`, `status: backlog`
 - Nice to Have tasks → `priority: nice-to-have`, `status: backlog`
+- Pipeline Tools tasks → `priority: tooling`, `status: ready-for-dev` (omit `file` field; set `id` to `T[N]-001`, `T[N]-002`, etc.; draw from tooling capacity pool, not game capacity)
 
 For `update`: read the existing `sprint-status.yaml`, carry over statuses for
 stories that haven't changed, add new stories, remove dropped ones.

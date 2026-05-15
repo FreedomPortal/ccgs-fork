@@ -225,6 +225,15 @@ A depends on B). If any cycle is detected (e.g. A→B→A, or A→B→C→A):
 - [ ] Interaction pattern library is up-to-date with all patterns used in implementation
 - [ ] Accessibility compliance verified against committed tier in `design/accessibility-requirements.md`
 
+**Publishing Readiness Advisory** *(CONCERNS if any missing — these become FAIL at Polish → Release)*:
+- [ ] `production/publishing/publishing-roadmap.md` exists (run `/marketing-plan`)
+- [ ] Store page draft exists (Glob `production/publishing/store-page*`) — must be live to build wishlists during Polish
+- [ ] Press kit exists (Glob `production/publishing/presskit*`) (run `/press-outreach`)
+- [ ] `production/publishing/community-status.md` exists (run `/community-plan`)
+
+If any are missing, surface:
+> ⚠️ **Publishing work not started**: Polish is the final phase before release. These artifacts are **blocking** at Polish → Release — missing them now means a surprise FAIL at the exit gate. Store pages need time live on the store to build wishlists; starting in Polish is already late. Run the linked skills before beginning Polish sprint work.
+
 ---
 
 ### Gate: Polish → Release
@@ -333,6 +342,24 @@ For items that can't be automatically verified, **ask the user**:
 
 (Review mode was resolved in Phase 1. Use that stored value here.)
 
+### Gather Producer Context (required before spawning PR-PHASE-GATE)
+
+PR-PHASE-GATE runs a **Solo Dev Viability Check** that requires three inputs the artifact scan cannot supply. Collect them now, before spawning any director.
+
+**Step 1 — Team size**: read `production/team.txt` if it exists. If not found, use `AskUserQuestion`:
+- Prompt: "What is the current team size?"
+- Options: `[A] Solo (1 person)` / `[B] 2–3 people` / `[C] 4+ people`
+
+**Step 2 — Runway estimate**: check `production/milestones/` for any file containing a runway or budget field. If not found, use `AskUserQuestion`:
+- Prompt: "What is the current runway estimate (time or budget remaining)?"
+- Options: `[A] < 1 month` / `[B] 1–3 months` / `[C] 3–6 months` / `[D] 6+ months` / `[E] Unknown / not tracked`
+
+**Step 3 — Blocked story count**: read `production/sprint-status.yaml`. Count entries with `status: blocked`. If the file doesn't exist, record count as `unknown`.
+
+Store all three values. Pass them explicitly to PR-PHASE-GATE in the next step.
+
+---
+
 Before generating the final verdict, spawn all four directors as **parallel subagents** via Task using the parallel gate protocol from `.claude/docs/director-gates.md`. Issue all four Task calls simultaneously — do not wait for one before starting the next.
 
 **Spawn in parallel:**
@@ -340,6 +367,7 @@ Before generating the final verdict, spawn all four directors as **parallel suba
 1. **`creative-director`** — gate **CD-PHASE-GATE** (`.claude/docs/director-gates.md`)
 2. **`technical-director`** — gate **TD-PHASE-GATE** (`.claude/docs/director-gates.md`)
 3. **`producer`** — gate **PR-PHASE-GATE** (`.claude/docs/director-gates.md`)
+   Pass additionally: team size, runway estimate, blocked story count (gathered above)
 4. **`art-director`** — gate **AD-PHASE-GATE** (`.claude/docs/director-gates.md`)
 
 Pass to each: target phase name, list of artifacts present, and the context fields listed in that gate's definition.
@@ -357,10 +385,23 @@ Technical Director: [READY / CONCERNS / NOT READY]
 
 Producer:           [READY / CONCERNS / NOT READY]
   [feedback]
+  Solo Dev Viability Check:
+    1. Scope achievable: YES/NO — [reason]
+    2. Release date alignment: YES/NO/N/A — [reason]
+    3. Scope creep risks: YES/NO — [reason]
+  Flagged risks: [list or "none"]
 
 Art Director:       [READY / CONCERNS / NOT READY]
   [feedback]
 ```
+
+**After collecting all four verdicts** — before computing the final verdict — check the Producer's Solo Dev Viability Check output for any NO answers. If any exist, pause and use `AskUserQuestion`:
+- Prompt: "Producer flagged solo dev viability risks. How do you want to proceed?"
+- Options:
+  - `[A] Acknowledge risk and proceed — I accept these risks`
+  - `[B] Revise scope before advancing — pause gate`
+
+Do not advance the gate until the user explicitly selects [A] or [B]. A READY producer verdict with unacknowledged NO answers must not auto-advance.
 
 **Apply to the verdict:**
 - Any director returns NOT READY → verdict is minimum FAIL (user may override with explicit acknowledgement)
