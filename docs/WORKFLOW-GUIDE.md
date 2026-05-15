@@ -1,4 +1,4 @@
-# Claude Code Game Studios -- Complete Workflow Guide
+# Claude Code Game Studios: Technica Edition -- Complete Workflow Guide
 
 > **How to go from zero to a shipped game using the Agent Architecture.**
 >
@@ -161,7 +161,7 @@ with defined pillars and a player journey. This is where you figure out
                                                                    v
                                                              /prototype
                                                        (concept prototype — 1-3 days)
-                                                        PROCEED ↓     PIVOT → /brainstorm
+                                                           PROCEED ↓ PIVOT → /brainstorm
                                                                    |
                                                                    v (PROCEED)
                                                              /map-systems
@@ -1708,8 +1708,8 @@ conflicts go to `producer`.
 ### Workflow 8: "I'm lost / don't know what to do next"
 
 ```
-1. /help (reads your phase, checks artifacts, tells you what's next)
-2. If /help doesn't help: /project-stage-detect (full audit)
+1. /next (reads your phase, checks artifacts, tells you what's next)
+2. If /next doesn't help: /project-stage-detect (full audit)
 3. If stage seems wrong: /gate-check at the transition you think you're at
 ```
 
@@ -1737,7 +1737,7 @@ conflicts go to `producer`.
    shader. Do not ask `qa-tester` to make design decisions. The hierarchy
    exists for a reason.
 
-6. **Run /help when uncertain.** It reads your actual project state and tells
+6. **Run `/next` when uncertain.** It reads your actual project state and tells
    you the single most important next step.
 
 7. **Run `/design-review` before handing designs to programmers.** This
