@@ -11,7 +11,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-52-blueviolet" alt="52 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-108-green" alt="108 Skills"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-112-green" alt="112 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-14-orange" alt="14 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
@@ -138,11 +138,17 @@ Handles localization execution under `localization-lead` direction. String wrapp
 
 ### Demo Workflow
 
+Full chain: `/demo-plan` → `/demo-scope` → `/demo-build` → `/demo-playtest` → `/demo-feedback` → `/demo-iterate` → `/demo-polish` → final build.
+
 | Skill | Purpose |
 |-------|---------|
+| `/demo-plan` | Goals, milestones, effort estimate, and risk register for the demo production effort |
 | `/demo-scope` | Define demo boundaries — what content is included, what is cut, what impression to leave |
-| `/demo-build` | Export and validate a playable demo build |
+| `/demo-build` | Export and validate a playable demo build with content gate and save isolation checks |
 | `/demo-playtest` | Structured playtest protocol for demo-specific goals (first impressions, conversion) |
+| `/demo-feedback` | Aggregate 2+ playtest sessions into cross-session patterns with a go/no-go release verdict |
+| `/demo-iterate` | Targeted blocker resolution: scope minimum fix → delegate to `/dev-story` or `/bug-report` → verify |
+| `/demo-polish` | Demo-specific polish scoped to first-impression, onboarding clarity, and end-state CTA conversion |
 
 ---
 
@@ -235,9 +241,9 @@ CCGS:TE skills map onto the existing 7-stage pipeline as a **parallel publishing
 | 1 — Concept | `/marketing-plan`, `/monetization-design` |
 | 2 — Systems Design | `/analytics-setup` |
 | 3 — Technical Setup | `/setup-tool` (if pipeline tool work in scope) |
-| 4 — Pre-Production | `/taste-gate`, `/community-plan`, `/demo-scope` |
-| 5 — Production | `/export-devlog`, `/export-social`, `/live-ops-plan` |
-| 6 — Polish | `/export-steam-page`, `/press-outreach`, `/export-pitch`, `/demo-build`, `/demo-playtest`, `/localization-*` |
+| 4 — Pre-Production | `/taste-gate`, `/community-plan`, `/demo-plan`, `/demo-scope` |
+| 5 — Production | `/export-devlog`, `/export-social`, `/live-ops-plan`, `/demo-build`, `/demo-playtest`, `/demo-feedback`, `/demo-iterate` |
+| 6 — Polish | `/export-steam-page`, `/press-outreach`, `/export-pitch`, `/demo-polish`, `/demo-build` (final), `/localization-*` |
 | 7 — Release | `/export-build`, `/team-publish`, `/post-mortem` |
 | Post-Launch | `/dlc-design`, `/mod-support`, `/live-ops-plan` (operational) |
 
@@ -248,8 +254,6 @@ CCGS:TE skills map onto the existing 7-stage pipeline as a **parallel publishing
 ## Roadmap
 
 ### Pending Implementation
-
-**Demo Suite (partial)** — `/demo-plan`, `/demo-polish`, `/demo-feedback`, `/demo-iterate` not yet implemented. Current demo skills cover scope → build → playtest only.
 
 **Player Insight Loop** — analytics and live ops exist but no feedback loop connecting them:
 - `/telemetry-design` — instrument player events at the design level
