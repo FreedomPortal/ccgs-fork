@@ -173,6 +173,7 @@ Full chain: `/demo-plan` → `/demo-scope` → `/demo-build` → `/demo-playtest
 |-------|---------|
 | `/export-build` | Export release build via engine headless export — logs version, platform, timestamp to `production/qa/builds.md` |
 | `/taste-gate` | Human taste approval checkpoint before batch AI image generation. |
+| `/refine-copy` | Remove AI writing patterns from player-facing copy — 8-pass editorial filter covering structure, vocabulary, rhythm, hedging, and voice. Called automatically by all export skills. |
 
 ---
 
