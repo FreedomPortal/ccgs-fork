@@ -238,7 +238,10 @@ Save isolation:  [confirmed / warning / not checked]
 Next steps:
 1. Smoke-test the demo binary on a clean machine before distribution
 2. Run /demo-playtest with this build to validate first impression and onboarding
-3. For Steam Next Fest: submit via Steamworks → Demos section
+3. After 2+ sessions: run /demo-feedback to synthesize patterns and get a go/no-go verdict
+4. If blockers found: run /demo-iterate to resolve them, then rebuild
+5. When feedback clears: run /demo-polish, then /demo-build for the final public build
+6. For Steam Next Fest: submit via Steamworks → Demos section
 
 [If FAIL:]
 Error output:

@@ -240,7 +240,9 @@ Priority actions:
 Next steps:
 - Run /demo-playtest again with a fresh tester to build a conversion trend
 - If conversion blockers found: address before any public demo release
-- When 3+ sessions complete: review demo-conversion-summary.md for patterns
+- When 2+ sessions complete: run /demo-feedback to synthesize patterns and get a go/no-go verdict
+- If /demo-feedback returns NO-GO: run /demo-iterate to resolve P1 blockers
+- When feedback clears P1 blockers: run /demo-polish before the final build
 ```
 
 ---

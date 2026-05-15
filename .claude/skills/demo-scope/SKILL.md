@@ -184,6 +184,11 @@ Save handling: [description]
 Next steps:
 - /demo-build — export and validate the demo build against this scope
 - /demo-playtest — run a structured playtest focused on first impression and conversion
+- /demo-feedback — after 2+ playtest sessions, synthesize patterns and get a go/no-go verdict
+- /demo-polish — final polish pass before public release (run after feedback clears P1 blockers)
+
+[If /demo-plan was not run first:]
+Note: /demo-plan can define milestones, goals, and a risk register for the demo production effort.
 ```
 
 ---
