@@ -102,7 +102,7 @@ Structure:
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Steam Next Fest — research submission window | [status] | |
+| Steam Next Fest — research submission window | [status] | Run /demo-plan to set goals and milestones |
 | Influencer target list (10–20 names) | [status] | |
 | Trailer brief written | [status] | |
 | Press kit complete (art + fact sheet) | [status] | |
@@ -113,7 +113,7 @@ Structure:
 | Task | Status | Notes |
 |------|--------|-------|
 | Press outreach begins | [status] | |
-| Demo or playtest build available | [status] | |
+| Demo or playtest build available | [status] | Run /demo-scope → /demo-build → /demo-playtest |
 | Wishlist push campaign | [status] | |
 | Steam page fully polished | [status] | Run /export-steam-page |
 

@@ -181,9 +181,13 @@ Coordinate multiple agents on a single feature area:
 
 | Command | Purpose |
 |---------|---------|
+| `/demo-plan` | Goals, milestones, effort estimate, risk register for the demo production effort |
 | `/demo-scope` | Define demo boundaries — included content, what is cut, target impression |
 | `/demo-build` | Export and validate a playable demo build |
 | `/demo-playtest` | Structured playtest protocol for demo-specific goals (first impressions, conversion) |
+| `/demo-feedback` | Aggregate 2+ playtest sessions into patterns and a go/no-go release verdict |
+| `/demo-iterate` | Targeted blocker resolution: scope → delegate to dev-story/bug-report → verify |
+| `/demo-polish` | Demo-specific polish scoped to first-impression, onboarding, and end-state CTA |
 
 ## Localization Suite — CCGS:TE
 

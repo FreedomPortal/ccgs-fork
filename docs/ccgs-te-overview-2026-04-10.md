@@ -201,9 +201,9 @@ CCGS:TE skills map onto the existing 7-stage pipeline as a **parallel publishing
 | 1 — Concept | `/marketing-plan`, `/monetization-design` |
 | 2 — Systems Design | `/analytics-setup` |
 | 3 — Technical Setup | `/setup-tool` (if pipeline tool work in scope) |
-| 4 — Pre-Production | `/community-plan`, `/demo-scope` |
-| 5 — Production | `/export-devlog`, `/export-social`, `/live-ops-plan` |
-| 6 — Polish | `/export-steam-page`, `/press-outreach`, `/export-pitch`, `/demo-build`, `/demo-playtest`, `/localization-*` |
+| 4 — Pre-Production | `/community-plan`, `/demo-plan`, `/demo-scope` |
+| 5 — Production | `/export-devlog`, `/export-social`, `/live-ops-plan`, `/demo-build`, `/demo-playtest`, `/demo-feedback`, `/demo-iterate` |
+| 6 — Polish | `/export-steam-page`, `/press-outreach`, `/export-pitch`, `/demo-polish`, `/demo-build` (final), `/localization-*` |
 | 7 — Release | `/export-build`, `/team-publish`, `/day-one-patch`, `/post-mortem` |
 | Post-Launch | `/dlc-design`, `/mod-support`, `/live-ops-plan` (operational) |
 
@@ -215,7 +215,7 @@ CCGS:TE skills map onto the existing 7-stage pipeline as a **parallel publishing
 
 ### Pending Implementation
 
-**Demo Suite (partial)** — `/demo-plan`, `/demo-polish`, `/demo-feedback`, `/demo-iterate` not yet implemented. Current demo skills cover scope → build → playtest only.
+**Demo Suite** — Complete. Full chain: `/demo-plan` → `/demo-scope` → `/demo-build` → `/demo-playtest` → `/demo-feedback` → `/demo-iterate` → `/demo-polish` → final build.
 
 **Player Insight Loop** — analytics and live ops exist but no feedback loop connecting them:
 - `/telemetry-design` — instrument player events at the design level
