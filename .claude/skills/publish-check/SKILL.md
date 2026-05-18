@@ -21,6 +21,31 @@ Read all of the following:
 
 ---
 
+## 1b. Scan Publishing Folder
+
+Glob all files in `production/publishing/`. For each file found, cross-reference
+against roadmap task status using these mappings:
+
+| File pattern | Roadmap task |
+|---|---|
+| `devlog-N-YYYY-MM-DD.md` | "Devlog #N published" — extract date from filename |
+| `itch-page.md` | "itch.io page content written" |
+| `press-kit.md` | "press kit skeleton drafted" |
+| `reddit-post-*.md` | "Reddit post drafted" |
+
+For each matched file:
+- If the corresponding roadmap task is NOT marked ✅ → flag as **📁 Untracked** (artifact
+  exists on disk but roadmap is stale)
+- If a roadmap task IS marked ✅ but no matching file exists → flag as **⚠️ Missing artifact**
+  (roadmap claims done but no file found)
+
+Also note any files in `production/publishing/` with no roadmap mapping (informational only — do not flag as a problem).
+
+Include findings in the audit report under a `📁 FOLDER CHECK` section. If everything
+matches, print a single line: `📁 Folder check: all artifacts match roadmap.`
+
+---
+
 ## 2. Determine Current Dev Stage
 
 From the milestone files, identify the current stage:
@@ -66,9 +91,17 @@ Start preparing these before the next milestone:
 ✅ COMPLETED ([count] items)
 [brief list]
 
+📁 FOLDER CHECK
+[one line per discrepancy, or "all artifacts match roadmap."]
+
 === MOST URGENT ACTION ===
 [single most important thing to do this session]
 [exact skill command to run]
+
+Verdict: [COMPLIANT | CONCERNS | OVERDUE]
+  COMPLIANT   — no overdue items, no folder mismatches
+  CONCERNS    — unlocked items not yet started, minor folder gaps
+  OVERDUE     — one or more 🔴 items or ⚠️ missing artifacts
 ```
 
 ---
@@ -76,7 +109,7 @@ Start preparing these before the next milestone:
 ## 5. Offer to Update Roadmap
 
 Use `AskUserQuestion`:
-- "Do you want to update the roadmap with today's audit results?"
+- "May I write these audit results to `production/publishing/publishing-roadmap.md`?"
   - Options: "Yes, update status and overdue/unlocked sections",
     "No, I'll update it manually", "Mark specific items as complete first"
 
